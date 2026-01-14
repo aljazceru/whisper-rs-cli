@@ -9,7 +9,7 @@ fn main() -> Result<()> {
 
     let cli = whisper_rs_cli::cli::Cli::parse();
 
-    set_silent(cli.silent);
+    set_silent(!cli.debug);
 
     match cli.command {
         Commands::Transcribe(args) => whisper_rs_cli::cli::transcribe::execute(&args),

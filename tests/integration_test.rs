@@ -53,7 +53,7 @@ fn test_cli_version() {
 #[test]
 fn test_cli_missing_file() {
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
-    cmd.arg("transcribe").arg("--silent");
+    cmd.arg("transcribe");
     cmd.assert().failure();
 }
 
@@ -67,8 +67,7 @@ fn test_silent_mode() {
     cmd.arg("transcribe")
         .arg(test_wav.path())
         .arg("--outfile")
-        .arg(output_path.path())
-        .arg("--silent");
+        .arg(output_path.path());
     cmd.assert().success().stdout(predicate::str::is_empty());
 }
 
@@ -79,8 +78,7 @@ fn test_model_option() {
     cmd.arg("transcribe")
         .arg(test_wav.path())
         .arg("--model")
-        .arg("tiny")
-        .arg("--silent");
+        .arg("tiny");
     cmd.assert().success();
 }
 
@@ -91,8 +89,7 @@ fn test_language_option() {
     cmd.arg("transcribe")
         .arg(test_wav.path())
         .arg("--language")
-        .arg("en")
-        .arg("--silent");
+        .arg("en");
     cmd.assert().success();
 }
 
@@ -106,8 +103,7 @@ fn test_outfile_option() {
     cmd.arg("transcribe")
         .arg(test_wav.path())
         .arg("--outfile")
-        .arg(output_path.path())
-        .arg("--silent");
+        .arg(output_path.path());
 
     cmd.assert().success();
 }
@@ -121,8 +117,7 @@ fn test_multiple_options() {
         .arg("--model")
         .arg("base")
         .arg("--language")
-        .arg("en")
-        .arg("--silent");
+        .arg("en");
     cmd.assert().success();
 }
 
@@ -130,7 +125,7 @@ fn test_multiple_options() {
 fn test_unsupported_format_txt() {
     let test_file = create_test_file_unsupported(".txt");
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
-    cmd.arg("transcribe").arg(test_file.path()).arg("--silent");
+    cmd.arg("transcribe").arg(test_file.path());
     cmd.assert().failure();
 }
 
@@ -138,7 +133,7 @@ fn test_unsupported_format_txt() {
 fn test_unsupported_format_pdf() {
     let test_file = create_test_file_unsupported(".pdf");
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
-    cmd.arg("transcribe").arg(test_file.path()).arg("--silent");
+    cmd.arg("transcribe").arg(test_file.path());
     cmd.assert().failure();
 }
 
@@ -146,8 +141,7 @@ fn test_unsupported_format_pdf() {
 fn test_file_not_found() {
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
     cmd.arg("transcribe")
-        .arg("/nonexistent/file.wav")
-        .arg("--silent");
+        .arg("/nonexistent/file.wav");
     cmd.assert().failure();
 }
 
@@ -171,7 +165,7 @@ fn test_invalid_language_option() {
 fn test_wav_file_extension() {
     let test_wav = create_test_wav();
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
-    cmd.arg("transcribe").arg(test_wav.path()).arg("--silent");
+    cmd.arg("transcribe").arg(test_wav.path());
     cmd.assert().success();
 }
 
@@ -181,7 +175,7 @@ fn test_empty_file() {
     std::fs::write(temp_file.path(), b"").unwrap();
 
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
-    cmd.arg("transcribe").arg(temp_file.path()).arg("--silent");
+    cmd.arg("transcribe").arg(temp_file.path());
     cmd.assert().failure();
 }
 
@@ -191,8 +185,7 @@ fn test_silent_mode_no_stderr_logs() {
 
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
     cmd.arg("transcribe")
-        .arg(test_wav.path())
-        .arg("--silent");
+        .arg(test_wav.path());
 
     cmd.assert()
         .success()
@@ -200,14 +193,13 @@ fn test_silent_mode_no_stderr_logs() {
 }
 
 #[test]
-fn test_normal_mode_has_stderr_logs() {
+fn test_debug_mode_has_stderr_logs() {
     let test_wav = create_test_wav();
 
     let mut cmd = Command::cargo_bin("whisper-rs-cli").unwrap();
     cmd.arg("transcribe")
         .arg(test_wav.path())
-        .arg("--model")
-        .arg("tiny");
+        .arg("--debug");
 
     cmd.assert()
         .success()

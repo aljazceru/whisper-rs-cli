@@ -4,7 +4,7 @@ use std::os::raw::{c_char, c_void};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Once;
 
-static SILENT: AtomicBool = AtomicBool::new(false);
+static SILENT: AtomicBool = AtomicBool::new(true);
 static LOGGING_INIT: Once = Once::new();
 
 unsafe extern "C" fn whisper_log_callback(

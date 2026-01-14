@@ -10,7 +10,7 @@ pub struct Cli {
     pub command: Commands,
 
     #[arg(short, long, global = true, action = clap::ArgAction::SetTrue)]
-    pub silent: bool,
+    pub debug: bool,
 }
 
 #[derive(Subcommand, Debug)]
@@ -108,11 +108,11 @@ mod tests {
     }
 
     #[test]
-    fn test_cli_parse_silent_flag() {
-        let args = Cli::try_parse_from(["whisper-rs-cli", "transcribe", "test.wav", "--silent"]);
+    fn test_cli_parse_debug_flag() {
+        let args = Cli::try_parse_from(["whisper-rs-cli", "transcribe", "test.wav", "--debug"]);
         assert!(args.is_ok());
         let cli = args.unwrap();
-        assert!(cli.silent);
+        assert!(cli.debug);
     }
 
     #[test]
@@ -127,11 +127,11 @@ mod tests {
             "en",
             "--outfile",
             "out.txt",
-            "--silent",
+            "--debug",
         ]);
         assert!(args.is_ok());
         let cli = args.unwrap();
-        assert!(cli.silent);
+        assert!(cli.debug);
         let Commands::Transcribe(transcribe_args) = cli.command else {
             panic!("Expected Transcribe command");
         };
