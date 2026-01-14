@@ -1,7 +1,6 @@
 pub mod transcribe;
 
 use clap::{Parser, Subcommand};
-use clap_verbosity_flag::{InfoLevel, Verbosity};
 
 #[derive(Parser, Debug)]
 #[command(name = "whisper-rs-cli")]
@@ -10,11 +9,8 @@ pub struct Cli {
     #[command(subcommand)]
     pub command: Commands,
 
-    #[arg(short, long, global = true, action)]
+    #[arg(short, long, global = true, action = clap::ArgAction::SetTrue)]
     pub silent: bool,
-
-    #[command(flatten)]
-    pub verbose: Verbosity<InfoLevel>,
 }
 
 #[derive(Subcommand, Debug)]
@@ -143,12 +139,6 @@ mod tests {
         assert_eq!(transcribe_args.model, Some("base".to_string()));
         assert_eq!(transcribe_args.language, Some("en".to_string()));
         assert_eq!(transcribe_args.outfile, Some("out.txt".to_string()));
-    }
-
-    #[test]
-    fn test_cli_parse_verbose_flag() {
-        let args = Cli::try_parse_from(["whisper-rs-cli", "transcribe", "test.wav", "-v"]);
-        assert!(args.is_ok());
     }
 
     #[test]

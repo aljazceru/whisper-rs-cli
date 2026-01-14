@@ -1,7 +1,34 @@
 use owo_colors::OwoColorize;
+use std::ffi::CStr;
+use std::os::raw::{c_char, c_void};
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Once;
 
 static SILENT: AtomicBool = AtomicBool::new(false);
+static LOGGING_INIT: Once = Once::new();
+
+unsafe extern "C" fn whisper_log_callback(
+    _level: u32,
+    text: *const c_char,
+    _user_data: *mut c_void,
+) {
+    if !text.is_null() {
+        let msg = unsafe { CStr::from_ptr(text) };
+        if let Ok(s) = msg.to_str() {
+            if !is_silent() {
+                eprint!("{}", s);
+            }
+        }
+    }
+}
+
+pub fn init_whisper_logging() {
+    LOGGING_INIT.call_once(|| {
+        unsafe {
+            whisper_rs::set_log_callback(Some(whisper_log_callback), std::ptr::null_mut());
+        }
+    });
+}
 
 pub fn set_silent(silent: bool) {
     SILENT.store(silent, Ordering::SeqCst);

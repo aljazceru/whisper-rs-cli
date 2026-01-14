@@ -1,9 +1,12 @@
 use clap::Parser;
 use whisper_rs_cli::cli::Commands;
 use whisper_rs_cli::error::Result;
-use whisper_rs_cli::output::set_silent;
+use whisper_rs_cli::init_whisper_logging;
+use whisper_rs_cli::set_silent;
 
 fn main() -> Result<()> {
+    init_whisper_logging();
+
     let cli = whisper_rs_cli::cli::Cli::parse();
 
     set_silent(cli.silent);

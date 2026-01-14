@@ -214,16 +214,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "clap-verbosity-flag"
-version = "2.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34c77f67047557f62582784fd7482884697731b2932c7d37ced54bce2312e1e2"
-dependencies = [
- "clap",
- "log",
-]
-
-[[package]]
 name = "clap_builder"
 version = "4.5.54"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2190,10 +2180,10 @@ dependencies = [
  "assert_cmd",
  "assert_fs",
  "clap",
- "clap-verbosity-flag",
  "dirs",
  "hound",
  "indicatif",
+ "libc",
  "owo-colors",
  "predicates",
  "reqwest",
@@ -2202,6 +2192,7 @@ dependencies = [
  "tempfile",
  "thiserror 2.0.17",
  "whisper-rs",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
